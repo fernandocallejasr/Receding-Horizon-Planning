@@ -1,0 +1,42 @@
+# We'll Implement Breadth-First Search
+
+from queue import Queue
+from enum import Enum
+
+class Action(Enum):
+    UP = (-1, 0, 1)
+    DOWN = (1, 0, 1)
+    LEFT = (0, -1, 1)
+    RIGHT = (0, 1, 1)
+
+    def __str__(self):
+        if self == self.UP:
+            return "^"
+        if self == self.DOWN:
+            return "v"
+        if self == self.LEFT:
+            return "<"
+        if self == self.RIGHT:
+            return ">"
+
+    @property
+    def delta(self):
+        return (self.value[0], self.value[1])
+
+    @property
+    def cost(self):
+        return self.value[2]
+    
+def valid_actions(current_node, grid):
+    valid_array = []
+    n, m = grid.shape[0] - 1, grid.shape[1] - 1
+
+    for action in Action:
+        row = current_node[0] + action.delta[0]
+        column = current_node[1] + action.delta[1]
+
+        if (n >= row >= 0) and (m >= column >= 0):
+            if grid[row][column] == 0:
+                valid_array.append(action)
+
+    return valid_array
